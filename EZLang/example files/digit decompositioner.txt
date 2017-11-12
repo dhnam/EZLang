@@ -1,82 +1,96 @@
-MEM(0)�ڸ������ر�. MEM���ɾ ���� �޸� �߰� ���.17�� 7�� 2��. NEG�߰� ���̶� �ڵ尡 �� �׷�.
+MEM(0)자릿수 분해기 2 17.11.12.
 SET(-1)
-MEM(2)
+MEM(1)
 GET()
 MEM(3)
-SET(-11)������� INIT.
-MEM(2)�� �ڸ��� ���� ó��
+SET(-1)
+MEM(1)새로 시작하기
 SET(-10, 1)
-JLZ(14)
-MEM(1)
+JLZ(14)1자리 수라면
+MEM(1, 1)아니면
 SET(1, 1)
 MEM(0)
-JLZ(7)������� ���� ó��
-SET(9, 1)
-JLZ(43)���ʿ� �������� 0���� Ȯ��.
-MEM(1, 1)�ƴϸ�.
-JLZ(20)
-SET(-10, 1)
-JLZ(16)�� �ڸ� ã��
-SET(1)
-MEM(1, 1)
-SET(-11)
-MEM(-2, 1)���ư���
-JLZ(38)
-MEM(2)������(�ڸ��� ó�� ����)
-SET(-1, 1)
-JLZ(51)������ 0�� ��
-MEM(1, 1)
-JLZ(32)
-SET(-10, 1)
-JLZ(28)
-MEM(-1, 1)
-SET(11, 1)
-MEM(-1, 1)
-JLZ(38)�ѹ��� ���ƿ��� ���Ѵٸ�.
-MEM(0)���ƿ���.
-JLZ(25)
-SET(10, 1)�ѹ��� ���ƿ��� ��������: 38������
-MEM(-1, 1)
-JLZ(38)
-MEM(0)
-JLZ(25)
-SET(0)
-MEM(1, 1)���ʿ� �������� 0�� ���
-JLZ(48)
-SET(-10)
-MEM(1, 1)
-SET(-11)
-MEM(-2, 1)
-JLZ(38)
-MEM(2)���� ������ 0
-SET(0)
+JLZ(7)
+SET(9, 1)0인지 확인
+JLZ(67)0이면
 MEM(1)
+MEM(1, 1)아니면 옮기기 시작
+MEM(1, 1)
+JLZ(22)끝에 왔으면
+NEG()
+JLZ(18)
+NEG()
+MEM(1)옮기기 반복부분
 SET(-1, 1)
-JLZ(67)������ Ȯ��
+JLZ(32)다 옮겼으면
+MEM(1, 1)
+MEM(1, 1)
+JLZ(27)지금은 끝을 제외하고는 다 음수다.
 SET(1, 1)
-MEM(1)
+MEM(0)
+JLZ(23)
+SET(0)다 옮겼을 시 처리
+MEM(3)
+MEM(1, 1)뒤집으며 끝까지 가기
+JLZ(48)음수인가?(처음이 아닐 시, 끝이 아닌가?)
+NEG()
+JLZ(41)양수인가?(처음이 아닐 시, 끝인가?)
+SET(-1)처음이고, 끝까지 왔을 시
+MEM(0)
+JLZ(57)2->1 처리부로
+NEG()처음이 아니고 끝까지 왔을 시
+MEM(-1, 1)
+NEG()
+MEM(2, 1)
+SET(-1)
+MEM(0)
+JLZ(57)2->1 처리부로
+MEM(3)처음이 아니고, 끝까지 오지 못했을 시
+NEG()
+JLZ(53)끝인가?
+MEM(1, 1)
+JLZ(49)
+MEM(1, 1)
 SET(-1, 1)
-JLZ(64)
-MEM(2)
+MEM(0)
+JLZ(57)2->1 처리부로
+MEM(2)2->1 처리부
+SET(-1, 1)
+JLZ(64)다 옮겼는가?
+MEM(1)
 SET(1, 1)
 MEM(0)
 JLZ(57)
-SET(0)���ƿ���
+SET(0)다 옮겼으면
 MEM(0)
-JLZ(7)�ٽ� ó������
-MEM(2)���϶�
+JLZ(7)
+SET(0)애초에 0이면
 MEM(1, 1)
-JLZ(72)
-SET(-10, 1)
-JLZ(68)
+SET(-1, 1)
+JLZ(76)모두 다 끝났으면
+SET(1, 1)
 MEM(-1, 1)
-SET(10, 1)
+SET(9)
+MEM(0)
+JLZ(16)
+SET(1)인쇄부분
+MEM(1, 1)
+JLZ(81)끝까지 왔으면
+NEG()
+JLZ(77)
+MEM(-1, 1)인쇄 반복부분
+NEG()
+JLZ(96)다 인쇄했는지 확인
+NEG()
+SET(9, 1)
+JLZ(92)0이라면
+SET(-9, 1)
+NEG()
 PRT()
-MEM(-1, 1)
-JLZ(78)
-HLT()
-SET(10, 1)
+NEG()
+JLZ(81)
+SET(0)0이라면
 PRT()
-MEM(-1, 1)
-JLZ(78)
-HLT()
+SET(-1)
+JLZ(81)
+HLT()끝!
