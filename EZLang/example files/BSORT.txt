@@ -1,34 +1,34 @@
-MEM(0)버블소트V1.3 7월 27일 V1.0 28일 1.1 29일(아마)1.2 8.3일 1.3
+MEM(0)Bubble sort V1.3. 7/27 : V1.0, 7/28 : V1.1, 7/29(Maybe) : V1.2, 8/3 : V1.3
 SET(-1)
 MEM(1)
 MEM(1, 1)
 GET()
 NEG()
 JLZ(4)
-MEM(1)새로 시작
+MEM(1)New start
 MEM(1,1)
 JLZ(9)
 MEM(-1, 1)
 NEG()
 MEM(-1, 1)
 NEG()
-SET(-1, 1)종료확인
-JLZ(156)종료
+SET(-1, 1)Check halt
+JLZ(156)halt
 SET(1, 1)
-MEM(1)비교
+MEM(1)鍮꾧탳
 MEM(1, 1)
 JLZ(19)
 SET(-1, 1)
-JLZ(30)앞에가 더 작으면
+JLZ(30)If front one is smaller
 MEM(1, 1)
 SET(-1, 1)
-JLZ(53)뒤에가 더 작으면
+JLZ(53)If rear one is smaller
 MEM(1)
 SET(1,1)
 MEM(0)
 JLZ(18)
-SET(0)앞이 더 작을 때
-MEM(1)1번에 저장해논 만큼 키우기
+SET(0)When front is smaller
+MEM(1)Grow it with value stored in memory 1
 SET(-1, 1)
 JLZ(41)
 MEM(1,1)
@@ -41,18 +41,18 @@ JLZ(31)
 SET(0)
 MEM(1, 1)
 JLZ(42)
-MEM(-1, 1)그 다음것 준비
+MEM(-1, 1)Prepate for next one
 NEG()
-SET(-1, 1)확정인가
-JLZ(108)확정이면
+SET(-1, 1)Check if determined
+JLZ(108)If determined
 SET(1,1)
 MEM(2,1)
 NEG()
 MEM(0)
 JLZ(18)
-MEM(1)뒤에가 더 작다 : 교체
-SET(-1, 1)키우기
-JLZ(63)다 키웠으면
+MEM(1)When rear is smaller : change
+SET(-1, 1)Grow
+JLZ(63)If growing is done
 MEM(1,1)
 JLZ(56)
 SET(1, 1)
@@ -60,7 +60,7 @@ MEM(1,1)
 SET(1, 1)
 MEM(0)
 JLZ(53)
-SET(0)교체부분 : 앞의 수 저장
+SET(0)Change part : save front number
 MEM(1)
 MEM(1,1)
 JLZ(65)
@@ -72,7 +72,7 @@ SET(1, 1)
 MEM(0)
 JLZ(64)
 SET(0)
-MEM(1)교체 부분 : 복제
+MEM(1)Change part : duplicate
 MEM(1, 1)
 JLZ(76)
 SET(-1, 1)
@@ -81,7 +81,7 @@ MEM(1, 1)
 SET(1, 1)
 MEM(0)
 JLZ(75)
-SET(0)교체 부분 : 앞의 수 불러오기
+SET(0)Change part : get front number
 MEM(1, 1)
 SET(1, 1)
 MEM(1)
@@ -92,7 +92,7 @@ JLZ(90)
 SET(1, 1)
 MEM(0)
 JLZ(87)
-SET(0)그다음 것 준비 및 오차 보정
+SET(0)Prepare for next one and fix error
 MEM(1, 1)
 JLZ(96)
 SET(1, 1)
@@ -100,19 +100,19 @@ MEM(1, 1)
 NEG()
 MEM(-2, 1)
 NEG()
-SET(-1, 1)확정인가
-JLZ(108)확정이면
+SET(-1, 1)Determined?
+JLZ(108)If determined
 SET(1, 1)
 MEM(0)
 JLZ(18)
-SET(0)확정일 때
+SET(0)When determined
 MEM(1, 1)
 PRT()
 SET(0)
 MEM(1, 1)
 JLZ(115)
 NEG()
-MEM(1)0찾기
+MEM(1)Find
 MEM(1, 1)
 NEG()
 SET(-1, 1)
@@ -120,7 +120,7 @@ JLZ(123)
 SET(1, 1)
 NEG()
 JLZ(116)
-SET(0)0자리 메꾸기(당기기)
+SET(0)Pull
 MEM(1, 1)
 NEG()
 JLZ(137)
@@ -128,14 +128,14 @@ MEM(1)
 MEM(1, 1)
 JLZ(128)
 MEM(1, 1)
-SET(-1, 1)한칸을 다 당겼는가?
+SET(-1, 1)Pulled one fully?
 JLZ(148)
 MEM(-1, 1)
 SET(1, 1)
 MEM(0)
 JLZ(127)
-NEG()마지막수까지 당겼을 때
-MEM(1)마지막꺼(-1?) 당기기
+NEG()If pulled to last one
+MEM(1)Pull last one(-1)?
 MEM(1, 1)
 JLZ(139)
 MEM(1, 1)
@@ -145,14 +145,14 @@ MEM(-1, 1)
 SET(1, 1)
 MEM(0)
 JLZ(138)
-SET(0)다시 당기러 가기(다 당겼을때)
+SET(0)Go to pull again(if pulled complitly)
 MEM(-1, 1)
 NEG()
 MEM(0)
 JLZ(115)
-SET(0)다 당긴 후 새로 시작
+SET(0)Restart after pull complitly
 MEM(0)
 JLZ(8)
-MEM(1, 1)종료 : 마지막 출력
+MEM(1, 1)Halt : last print
 PRT()
 HLT()
