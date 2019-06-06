@@ -7,7 +7,7 @@ Have four feauture :
  - Readability
  - Expendability
 
-## Instructions
+## Instructors
 Can read Korean? [My blog link here.](https://dhnam0502.blog.me/221068174333)
 
 Like turing machine, memory with infinite size is provided.
@@ -22,7 +22,7 @@ There are 7 instructors in EZLang
  6. HLT(). Halt program.
  7. NEG(). Save negative number to current memory.
  
-...And anything following ) is comment.
+...And anything following `)` is comment.
 
 ## Example
 
