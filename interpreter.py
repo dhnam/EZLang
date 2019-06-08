@@ -29,6 +29,10 @@ class Program:
         else:
             return 1
 
+    @property
+    def length(self):
+        return len(self.parsed_program)
+
 
 class State:
     def __init__(self):
@@ -63,8 +67,24 @@ class State:
         self.__ins_place = value
 
     def __str__(self):
-        return str(self.mem_list) + "\nmem_place = " + str(self.mem_place) +\
-                    "\nins_place = " + str(self.ins_place)
+        def to_num(s, place):
+            if place == self.mem_place:
+                return s
+            try:
+                return int(s)
+            except ValueError:
+                try:
+                    return float(s)
+                except ValueError:
+                    return s
+        if self.mem_place >= len(self.mem_list):
+            self.mem = 0
+        mem_str = str(self.mem_list)[1:-1]
+        mem_str_list = mem_str.split(", ")
+        mem_str = str([to_num(x, i) for i, x in enumerate(mem_str_list)])
+        
+        return "memory = " + mem_str + "\nmem_place = " +\
+               str(self.mem_place) + "\nins_place = " + str(self.ins_place + 1)
 
 
 class ParseError(Exception):
@@ -93,62 +113,67 @@ class Parse:
             have_nothing = True
             is_token = False
             is_minus = False
+            is_comment = False
             for next_char in line_toparse:
-                if is_token:
-                    if next_char == "\\":
-                        to_append[1][now_param] += '\\'
-                    elif next_char == 'n' or next_char == 'N':
-                        to_append[1][now_param] += '\n'
-                    elif next_char == "'":
-                        to_append[1][now_param] += "'"
-                    else:
-                        raise ParseError("unexpected token " + next_char +
-                                         " after \\ in line", i)
-                    is_token = False
+                if is_comment:
+                    to_append[2] += next_char
                 else:
-                    if next_char == '\\':
-                        is_token = True
-                    if next_char == "'":
-                        if is_character:
-                            is_character = False
+                    if is_token:
+                        if next_char == "\\":
+                            to_append[1][now_param] += '\\'
+                        elif next_char == 'n' or next_char == 'N':
+                            to_append[1][now_param] += '\n'
+                        elif next_char == "'":
+                            to_append[1][now_param] += "'"
                         else:
-                            is_character = True
-                            to_append[1][now_param] = ''
-                            have_nothing = False
-                    elif next_char == ",":
-                        if not is_character:
-                            to_append[1].append(0)
-                            now_param += 1
-                            have_nothing = False
-                            is_minus = False
-                        else:
-                            to_append[1][now_param] += ','
-                    elif next_char == ")":
-                        if not is_character:
-                            if have_nothing:
-                                to_append[1] = []
-                            break
-                        else:
-                            to_append[1][now_param] += ")"
-                    elif next_char == " ":
-                        if not is_character:
-                            pass
-                        else:
-                            to_append[1][now_param] += " "
-                    elif next_char == "-":
-                        if not is_character:
-                            is_minus = True
-                        else:
-                            to_append[1][now_param] += "-"
+                            raise ParseError("unexpected token " + next_char +
+                                             " after \\ in line", i)
+                        is_token = False
                     else:
-                        have_nothing = False
-                        if is_character:
-                            to_append[1][now_param] += next_char
-                        elif not is_minus:
-                            to_append[1][now_param] = to_append[1][now_param] *\
-                                                      10 + int(next_char)
+                        if next_char == '\\':
+                            is_token = True
+                        if next_char == "'":
+                            if is_character:
+                                is_character = False
+                            else:
+                                is_character = True
+                                to_append[1][now_param] = ''
+                                have_nothing = False
+                        elif next_char == ",":
+                            if not is_character:
+                                to_append[1].append(0)
+                                now_param += 1
+                                have_nothing = False
+                                is_minus = False
+                            else:
+                                to_append[1][now_param] += ','
+                        elif next_char == ")":
+                            if not is_character:
+                                if have_nothing:
+                                    to_append[1] = []
+                                is_comment = True
+                                to_append.append('')
+                            else:
+                                to_append[1][now_param] += ")"
+                        elif next_char == " ":
+                            if not is_character:
+                                pass
+                            else:
+                                to_append[1][now_param] += " "
+                        elif next_char == "-":
+                            if not is_character:
+                                is_minus = True
+                            else:
+                                to_append[1][now_param] += "-"
                         else:
-                            to_append[1][now_param] = to_append[1][now_param] *\
-                                                      10 - int(next_char)
+                            have_nothing = False
+                            if is_character:
+                                to_append[1][now_param] += next_char
+                            elif not is_minus:
+                                to_append[1][now_param] = to_append[1][now_param] *\
+                                                          10 + int(next_char)
+                            else:
+                                to_append[1][now_param] = to_append[1][now_param] *\
+                                                          10 - int(next_char)
             self.parsed.append(to_append)
         return self.parsed
