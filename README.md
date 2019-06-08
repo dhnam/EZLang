@@ -18,7 +18,7 @@ There are 7 instructors in EZLang
  2. SET(V, U = 0). Set current memory to `V`. If `U` is 1, Add `V` to current memory. Use like `SET(5)` or `SET(-1, 1)`
  3. JLZ(N). Jump to `N`th instructor if current memory is less than zero. Use like `JLZ(3)`. Note that first line is 1, not 0.
  4. GET(C = 0). Get a number and set current memory to the number. if `C` is 1, Get a character and set current memory to unicode number of the character.
- 5. PRT(C = 0). Same as `GET`, but not get but print.
+ 5. PRT(C = 0). Same as `GET`, except it prints.
  6. HLT(). Halt program.
  7. NEG(). Save negative number to current memory.
  
