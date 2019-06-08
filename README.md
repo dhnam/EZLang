@@ -57,16 +57,16 @@ First, make new class with this format :
     class Yourclass(Instructor):
         def __init__(self):
             self.ins_name = "(name)"
-            self.par_count_min = 0
-            self.par_count_max = 0
+            self.par_count_min = 0 # minimum parameter
+            self.par_count_max = 0 # maximum parameter
         def process(self, param, state):
             super(Yourclass, self).process(param, state)
             #and your code
 ```
 
-Second, write your code. You can access to variables with `state.(variable)`.
+Second, write your code. You can access to variables with `state.variable`.
 
-There is five variable you can access, `mem_place`, `mem_list`, `now_excuting`, `ins_place`(note that it start with 1), `output_list`.
+There is five variable you can access, `mem_place`, `mem_list`, `excuting`, `ins_place`(When get, it is 0-based, and when set, it is 1-based.), `output_list`, `mem`(current memory)
 
 Third, add your new instructor in `get_instructor_list` method of `Instructor` class.
 
