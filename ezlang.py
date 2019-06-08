@@ -13,21 +13,47 @@ else:
             if is_finished == 1:
                 break
     elif sys.argv[2] == 'd':
-        print(program.state)
-        print(program.state.output_list)
-        print(program.parsed_program[program.state.ins_place])
         while True:
+            def print_():
+                os.system('cls' if os.name=='nt' else 'clear')
+                print("===STATE===")
+                print(program.state)
+                print()
+                print("===OUTPUT===")
+                print(program.state.output_list)
+                print()
+                print("==PROGRAM==")
+                for i in range(-2, 3):
+                    place = program.state.ins_place + i
+                    if place < 0:
+                        continue
+                    if place >= program.length:
+                        break
+                    if i == 0:
+                        print(">>> ", end='')
+                    print(place + 1,
+                          program.parsed_program[place])
+                print()
+                place = program.state.ins_place
+                if place < program.length and\
+                   program.parsed_program[place][0] == 'JLZ':
+                    print("===Line " +\
+                          str(program.parsed_program[place][1][0]) +\
+                          "===")
+                    for i in range(5):
+                        place_new =\
+                                  program.parsed_program[place][1][0] -\
+                                  1 + i
+                        if place_new >= program.length:
+                            break
+                        print(place_new + 1,
+                              program.parsed_program[place_new])
+
+            print_()
             input("Press enter to continue...")
-            os.system('cls' if os.name=='nt' else 'clear')
             is_finished = program.process_one()
             if is_finished == 1:
-                os.system('cls' if os.name=='nt' else 'clear')
-                print(program.state)
-                print(program.state.output_list)
-                print(program.parsed_program[program.state.ins_place])
+                print_()
                 break
-            print(program.state)
-            print(program.state.output_list)
-            print(program.parsed_program[program.state.ins_place])
     else:
         print("Usage : python(.exe) ezlang.py your_file (d to debug)")
