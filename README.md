@@ -48,7 +48,7 @@ HLT()
 
 ## How to use?
 
-`python(.exe) interpreter.py your_file (d to debug)`
+`python(.exe) ezlang.py your_file (d to debug)`
 
 ## How to write new instructor?
 
