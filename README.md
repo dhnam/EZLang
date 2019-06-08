@@ -71,7 +71,3 @@ There is five variable you can access, `mem_place`, `mem_list`, `now_excuting`, 
 Third, add your new instructor in `get_instructor_list` method of `Instructor` class.
 
 Done!
-
-# Warning
-
-It use `cls` commend, so maybe it is windows only.
