@@ -9,9 +9,10 @@ class Instructor:
 
     def process(self, param, state):
         if len(param) < self.par_count_min or len(param) > self.par_count_max:
-            print("Error : At line " + str(state.get_instructor_place()) + ", excepted " + str(self.par_count_min) +
-                  " to " + str(self.par_count_max) + " parameters but got " + str(len(param)))
-            state.set_executing(False)
+            print("Error : At line " + str(state.ins_place) +
+                  ", excepted " + str(self.par_count_min) + " to " +
+                  str(self.par_count_max) + " parameters but got " + str(len(param)))
+            state.executing = False
 
     def get_instructor_list(self):
         return[Mem(), Set(), Jlz(), Get(), Prt(), Hlt(), Neg()]
@@ -28,12 +29,12 @@ class Mem(Instructor):
     def process(self, param, state):
         super(Mem, self).process(param, state)
         if len(param) == self.par_count_min:
-            state.set_mem_place(param[0])
+            state.mem_place = param[0]
         else:
             if param[1] == 0:
-                state.set_mem_place(param[0])
+                state.mem_place = param[0]
             else:
-                state.set_mem_place(state.get_mem_place() + param[0])
+                state.mem_place = state.mem_place + param[0]
 
 
 class Set(Instructor):
@@ -46,13 +47,12 @@ class Set(Instructor):
     def process(self, param, state):
         super(Set, self).process(param, state)
         if len(param) == self.par_count_min:
-            state.set_mem(param[0])
+            state.mem = param[0]
         else:
             if param[1] == 0:
-                state.set_mem(param[0])
+                state.mem = param[0]
             else:
-                state.set_mem(state.get_mem() + param[0])
-
+                state.mem = state.mem + param[0]
 
 class Jlz(Instructor):
     def __init__(self):
@@ -63,8 +63,8 @@ class Jlz(Instructor):
 
     def process(self, param, state):
         super(Jlz, self).process(param, state)
-        if state.get_mem() < 0:
-            state.set_instructor_place(param[0])
+        if state.mem < 0:
+            state.ins_place = param[0]
 
 
 class Get(Instructor):
@@ -77,15 +77,13 @@ class Get(Instructor):
     def process(self, param, state):
         super(Get, self).process(param, state)
         if len(param) == self.par_count_min:
-            state.set_mem(int(input("input a number : ")))
-            os.system('cls')
+            state.mem = int(input("input a number : "))
         else:
             if param[0] == 0:
-                state.set_mem(int(input("input a number : ")))
-                os.system('cls')
+                state.mem = int(input("input a number : "))
             else:
-                state.set_mem(ord(input("input a character : ")))
-                os.system('cls')
+                state.mem = ord(input("input a character : "))
+        os.system('cls' if os.name=='nt' else 'clear') 
 
 
 class Prt(Instructor):
@@ -98,15 +96,15 @@ class Prt(Instructor):
     def process(self, param, state):
         super(Prt, self).process(param, state)
         if len(param) == self.par_count_min:
-            print(state.get_mem(), end=" ")
-            state.output_list.append(state.get_mem())
+            print(state.mem, end=" ")
+            state.output_list.append(state.mem)
         else:
             if param[0] == 0:
-                print(state.get_mem(), end=" ")
-                state.output_list.append(state.get_mem())
+                print(state.mem, end=" ")
+                state.output_list.append(state.mem)
             else:
-                print(chr(state.get_mem()), end="")
-                state.output_list.append(chr(state.get_mem()))
+                print(chr(state.mem), end="")
+                state.output_list.append(chr(state.mem))
 
 
 class Hlt(Instructor):
@@ -118,8 +116,8 @@ class Hlt(Instructor):
 
     def process(self, param, state):
         super(Hlt, self).process(param, state)
-        print("")
-        state.set_executing(False)
+        print()
+        state.executing = False
 
 
 class Neg(Instructor):
@@ -131,7 +129,7 @@ class Neg(Instructor):
 
     def process(self, param, state):
         super(Neg, self).process(param, state)
-        state.set_mem(-state.get_mem())
+        state.mem = -state.mem
 
 
 '''

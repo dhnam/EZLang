@@ -11,18 +11,20 @@ class Program:
         self.parsed_program = Parse(original_text).parse()
 
     def process_one(self):
-        if self.state.get_executing():
-            now_ins_num = self.state.get_instructor_place()
+        if self.state.executing:
+            now_ins_num = self.state.ins_place
             try:
                 for next_ins in self.instructors:
                     if self.parsed_program[now_ins_num][0] == next_ins.ins_name:
-                        next_ins.process(self.parsed_program[now_ins_num][1], self.state)
+                        next_ins.process(self.parsed_program[now_ins_num][1],
+                                         self.state)
                         break
             except IndexError:
                 print('IndexError. Maybe you typed wrong instructor.')
                 return 1
-            if self.state.get_instructor_place() == now_ins_num:#if not jlz
-                self.state.set_instructor_place(now_ins_num + 2)#now_ins_num + 1(next line) + 1(list starts from 0)
+            if self.state.ins_place == now_ins_num:#if not jlz
+                self.state.ins_place = now_ins_num + 2
+                #now_ins_num + 1(next line) + 1(list starts from 0)
             return 0
         else:
             return 1
@@ -32,44 +34,37 @@ class State:
     def __init__(self):
         self.mem_place = 0
         self.mem_list = [0]
-        self.now_executing = True
-        self.ins_place = 1
+        self.executing = True
+        self.__ins_place = 1
         self.output_list = []
 
-    def get_mem_place(self):
-        return self.mem_place
-
-    def set_mem_place(self, place):
-        self.mem_place = place
-
-    def get_mem(self):
+    @property
+    def mem(self):
         if self.mem_place > len(self.mem_list) - 1:
             to_append = self.mem_place - len(self.mem_list) + 1
             for i in range(to_append):
                 self.mem_list.append(0)
         return self.mem_list[self.mem_place]
 
-    def set_mem(self, value):
+    @mem.setter
+    def mem(self, value):
         if self.mem_place > len(self.mem_list) - 1:
             to_append = self.mem_place - len(self.mem_list) + 1
             for i in range(to_append):
                 self.mem_list.append(0)
         self.mem_list[self.mem_place] = value
 
-    def get_executing(self):
-        return self.now_executing
+    @property
+    def ins_place(self):
+        return self.__ins_place - 1 #list starts from 0, and ins_place starts from 1
 
-    def set_executing(self, value):
-        self.now_executing = value
-
-    def get_instructor_place(self):
-        return self.ins_place - 1#list starts from 0, and ins_place starts from 1
-
-    def set_instructor_place(self, value):
-        self.ins_place = value
+    @ins_place.setter
+    def ins_place(self, value):
+        self.__ins_place = value
 
     def __str__(self):
-        return str(self.mem_list) + "\nmem_place = " + str(self.mem_place) + "\nins_place = " + str(self.ins_place)
+        return str(self.mem_list) + "\nmem_place = " + str(self.mem_place) +\
+                    "\nins_place = " + str(self.ins_place)
 
 
 class ParseError(Exception):
@@ -82,9 +77,15 @@ class Parse:
         self.parsed = []
 
     def parse(self):
-        for line in self.text:
+        for i, line in enumerate(self.text):
             to_append = []
-            (ins_name, line_toparse) = line.split("(", 1)
+            try:
+                (ins_name, line_toparse) = line.split("(", 1)
+            except ValueError:
+                print("Warning : no opening bracket found in line", i)
+                input("Press enter to continue...")
+                os.system('cls' if os.name=='nt' else 'clear')
+                pass
             to_append.append(ins_name.upper())
             is_character = False
             now_param = 0
@@ -101,7 +102,8 @@ class Parse:
                     elif next_char == "'":
                         to_append[1][now_param] += "'"
                     else:
-                        raise ParseError("unexpected char " + next_char + " after \\")
+                        raise ParseError("unexpected token " + next_char +
+                                         " after \\ in line", i)
                     is_token = False
                 else:
                     if next_char == '\\':
@@ -143,43 +145,10 @@ class Parse:
                         if is_character:
                             to_append[1][now_param] += next_char
                         elif not is_minus:
-                            to_append[1][now_param] = to_append[1][now_param] * 10 + int(next_char)
+                            to_append[1][now_param] = to_append[1][now_param] *\
+                                                      10 + int(next_char)
                         else:
-                            to_append[1][now_param] = to_append[1][now_param] * 10 - int(next_char)
+                            to_append[1][now_param] = to_append[1][now_param] *\
+                                                      10 - int(next_char)
             self.parsed.append(to_append)
         return self.parsed
-
-
-if len(sys.argv) != 2 and len(sys.argv) != 3:
-    print("Usage : python(.exe) interpreter.py your_file (d to debug)")
-else:
-    os.system('cls')
-    with open(sys.argv[1]) as file:
-        law_program = file.read()
-    program = Program(law_program)
-    if len(sys.argv) == 2:
-        while True:
-            is_finished = program.process_one()
-            if is_finished == 1:
-                break
-    elif sys.argv[2] == 'd':
-        print(program.state)
-        print(program.state.output_list)
-        print(program.parsed_program[program.state.get_instructor_place()])
-        os.system('pause')
-        os.system('cls')
-        while True:
-            is_finished = program.process_one()
-            if is_finished == 1:
-                os.system('cls')
-                print(program.state)
-                print(program.state.output_list)
-                print(program.parsed_program[program.state.get_instructor_place()])
-                break
-            print(program.state)
-            print(program.state.output_list)
-            print(program.parsed_program[program.state.get_instructor_place()])
-            os.system('pause')
-            os.system('cls')
-    else:
-        print("Usage : python(.exe) interpreter.py your_file (d to debug)")
